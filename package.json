@@ -1,16 +1,23 @@
 {
   "name": "@cocreate/dynamodb",
   "version": "1.0.0",
-  "description": "A simple dynamodb component in vanilla javascript. Easily configured using HTML5 data-attributes and/or JavaScript API.",
+  "description": "Lightweight, real-time Amazon DynamoDB CRUD wrapper and multi-tenant state routing client for the collaborative CoCreate ecosystem.",
   "keywords": [
     "dynamodb",
-    "low-code",
-    "realtime",
-    "realtime-framework",
-    "collaboration",
+    "aws-dynamodb",
+    "nosql",
+    "crud-api",
+    "abstract-crud",
+    "database-abstraction",
+    "multi-tenant",
+    "multi-tenant-routing",
+    "realtime-sync",
+    "state-synchronization",
     "shared-editing",
-    "html5-framework",
-    "javascript-framework"
+    "collaborative-editing",
+    "websocket-mesh",
+    "peer-to-peer-sync",
+    "p2p-database"
   ],
   "publishConfig": {
     "access": "public"
@@ -37,7 +44,8 @@
   "type": "module",
   "main": "./src/index.js",
   "dependencies": {
-    "@cocreate/utils": "^1.44.0",
-    "dynamodb": "^7.5.0"
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0",
+    "@cocreate/utils": "^1.44.0"
   }
 }
