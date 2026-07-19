@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/CoCreate-app/CoCreate-dynamodb/compare/v1.1.0...v1.1.1) (2026-07-19)
+
+
+### Bug Fixes
+
+* set default branch to main ([9dabbaa](https://github.com/CoCreate-app/CoCreate-dynamodb/commit/9dabbaaf696d1212ea62bc2cbc1a71df05a19826))
+
 # [1.1.0](https://github.com/CoCreate-app/CoCreate-dynamodb/compare/v1.0.1...v1.1.0) (2026-07-19)
 
 
