@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/CoCreate-app/CoCreate-dynamodb/compare/v1.0.1...v1.1.0) (2026-07-19)
+
+
+### Features
+
+* Update README.md to reflect CoCreate-dynamodb functionality and documentation ([5464f55](https://github.com/CoCreate-app/CoCreate-dynamodb/commit/5464f555af2c411e25bdeb8c9b37fca5166a8152))
+
 ## [1.0.1](https://github.com/CoCreate-app/CoCreate-dynamodb/compare/v1.0.0...v1.0.1) (2026-07-18)
 
 
