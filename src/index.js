@@ -1,21 +1,27 @@
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const {
-	DynamoDBDocumentClient,
-	ScanCommand,
-	GetCommand,
-	PutCommand,
-	UpdateCommand,
-	DeleteCommand,
-	TransactWriteCommand
-} = require("@aws-sdk/lib-dynamodb");
-const { CreateTableCommand, DeleteTableCommand, ListTablesCommand } = require("@aws-sdk/client-dynamodb");
-const {
-	dotNotationToObject,
-	queryData,
-	searchData,
-	sortData,
-	isValidDate
-} = require("@cocreate/utils");
+import {
+  DynamoDBClient,
+  CreateTableCommand,
+  DeleteTableCommand,
+  ListTablesCommand
+} from "@aws-sdk/client-dynamodb";
+
+import {
+  DynamoDBDocumentClient,
+  ScanCommand,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+  DeleteCommand,
+  TransactWriteCommand
+} from "@aws-sdk/lib-dynamodb";
+
+import {
+  dotNotationToObject,
+  queryData,
+  searchData,
+  sortData,
+  isValidDate
+} from "@cocreate/utils";
 
 const organizations = {};
 
@@ -886,4 +892,4 @@ function errorHandler(data, error, database, array) {
 	}
 }
 
-module.exports = { send };
+export default { send };
