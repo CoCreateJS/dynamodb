@@ -27,10 +27,10 @@ const organizations = {};
 
 /**
  * Dynamically resolves or caches an AWS DynamoDB Document Client instance.
- * Normalizes AWS credentials out of your structured data.url or data.storageUrl object.
+ * Normalizes AWS credentials out of your structured data.storageConfig.url object.
  */
 async function dbClient(data) {
-	const storageUrl = data.storageUrl || data.url;
+    const storageUrl = data.storageConfig?.url
 
 	if (storageUrl) {
 		if (!organizations[data.organization_id]) {

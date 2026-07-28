@@ -9,7 +9,7 @@ import {
  * To achieve strict isolation, we prefix table names: "orgId_arrayName"
  */
 function array(method, data) {
-    const storageName = data.storageName || data.provider || "dynamodb";
+    const storageName = data.storageConfig?.name;
     return new Promise(async (resolve) => {
         let type = "array";
         let arrayArray = [];

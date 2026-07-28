@@ -9,7 +9,7 @@ import {
  * DynamoDB is serverless and works globally on an AWS Region basis, so we emulate schemas.
  */
 function database(method, data) {
-    const storageName = data.storageName || data.provider || "dynamodb";
+    const storageName = data.storageConfig?.name;
     return new Promise(async (resolve) => {
         let type = "database";
         let databaseArray = [];

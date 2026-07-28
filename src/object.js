@@ -16,7 +16,7 @@ import {
  * "object" operations mapped to AWS DynamoDB Table Items.
  */
 function object(method, data) {
-    const storageName = data.storageName || data.provider || "dynamodb";
+    const storageName = data.storageConfig?.name;
     return new Promise(async (resolve) => {
         try {
             const db = await dbClient(data);
