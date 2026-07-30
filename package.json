@@ -45,7 +45,7 @@
   "main": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./distribution": "./dist/mongodb.js",
+    "./dist": "./dist/mongodb.js",
     "./installer": "./installer/mongodb.installer.js"
   },
   "devDependencies": {
