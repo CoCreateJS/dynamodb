@@ -49,11 +49,11 @@
     "./installer": "./installer/mongodb.installer.js"
   },
   "devDependencies": {
-    "@cocreate/webpack": "^1.6.2"
+    "@cocreate/webpack": "^1.7.0"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.0.0",
     "@aws-sdk/lib-dynamodb": "^3.0.0",
-    "@cocreate/utils": "^1.44.3"
+    "@cocreate/utils": "^1.46.0"
   }
 }
