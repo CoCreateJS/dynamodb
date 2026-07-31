@@ -1,6 +1,6 @@
 {
   "name": "@cocreate/dynamodb",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Lightweight, real-time Amazon DynamoDB CRUD wrapper and multi-tenant state routing client for the collaborative CoCreate ecosystem.",
   "keywords": [
     "dynamodb",
