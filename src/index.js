@@ -15,19 +15,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  ********************************************************************************/
 
-import { parentPort, isMainThread } from "node:worker_threads";
 import database from "./database.js";
 import array from "./array.js";
 import object from "./object.js";
-
-// Capture unhandled errors and rejections inside the worker isolate thread
-process.on("unhandledRejection", (reason, promise) => {
-    console.error("[Worker Isolate] Unhandled Rejection at:", promise, "reason:", reason);
-});
-
-process.on("uncaughtException", (err) => {
-    console.error("[Worker Isolate] Uncaught Exception:", err);
-});
 
 /**
  * Routes CRUD requests to appropriate database, array, or object modules.
@@ -47,66 +37,4 @@ async function send(data) {
     throw new Error(`Unsupported query target type: "${type}" in method "${data.method}"`);
 }
 
-/**
- * Initiates organization connection teardown by emitting orgDeleted process event.
- * @param {string} organizationId - Target organization identifier
- */
-async function closeConnection(organizationId) {
-    if (organizationId) {
-        process.emit("orgDeleted", organizationId);
-    }
-}
-
-// Directly handle Worker Thread IPC when running inside an isolated worker thread
-if (!isMainThread && parentPort) {
-    parentPort.on("message", async (msg) => {
-        const { id, action, data } = msg;
-
-        // 1. Handle CRUD Query Execution
-        if (action === "EXECUTE") {
-            try {
-                const result = await send(data);
-                parentPort.postMessage({
-                    id,
-                    status: true,
-                    result
-                });
-            } catch (err) {
-                console.error("[Worker Isolate] Error during send():", err);
-                parentPort.postMessage({
-                    id,
-                    status: false,
-                    error: err.message || err
-                });
-            }
-        }
-
-        // 2. Handle Organization Teardown
-        else if (action === "TEARDOWN_ORG") {
-            try {
-                const orgId = data?.organization_id;
-
-                if (orgId) {
-                    await closeConnection(orgId);
-                }
-
-                parentPort.postMessage({
-                    id,
-                    status: true,
-                    action: "TEARDOWN_ORG_COMPLETE",
-                    organization_id: orgId
-                });
-            } catch (err) {
-                console.error("[Worker Isolate] Error tearing down org in worker isolate:", err);
-                parentPort.postMessage({
-                    id,
-                    status: false,
-                    error: err.message || err
-                });
-            }
-        }
-    });
-}
-
-export { send, closeConnection };
-export default { send, closeConnection };
+export default { send };
