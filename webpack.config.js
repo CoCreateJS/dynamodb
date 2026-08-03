@@ -217,39 +217,10 @@ export default async (env, argv) => {
         },
         plugins: [
             ...commonPlugins,
-            new FileUploader(env, argv)
-        ]
-    };
-
-    const installerConfig = {
-        ...baseConfig,
-        name: "installer",
-        mode: isProduction ? "production" : "development",
-        entry: "./src/index.js",
-        output: {
-            path: path.resolve(__dirname, "installer"),
-            filename: "dynamodb.installer.js",
-            library: {
-                type: "module"
-            },
-            clean: true,
-            globalObject: "this"
-        },
-        optimization: {
-            minimize: isProduction,
-            minimizer: [
-                new EsbuildPlugin({
-                    target: "node18"
-                })
-            ],
-            splitChunks: false,
-            runtimeChunk: false
-        },
-        plugins: [
-            ...commonPlugins,
+            new FileUploader(env, argv),
             new SelfCleaningBundlePlugin({ isProduction })
         ]
     };
 
-    return [distributionConfig, installerConfig];
+    return distributionConfig;
 };
