@@ -50,7 +50,7 @@ function object(method, data) {
                     else if (!Array.isArray(data[type]))
                         data[type] = [data[type]];
 
-                    let isFilter = !!data.$filter;
+                    let isFilter = !!data.filter;
                     if ((isFilter && !data[type].length) || data.isFilter) {
                         data[type].splice(0, 0, { isFilter: "isEmptyObjectFilter" });
                     }
@@ -72,7 +72,7 @@ function object(method, data) {
                         delete data[type][i].$database;
                         delete data[type][i].$array;
 
-                        let queryFilter = isFilter ? data.$filter : (data[type][i].$filter || null);
+                        let queryFilter = isFilter ? data.filter : (data[type][i].filter || null);
 
                         if (method === "create") {
                             data[type][i] = replaceArray(data[type][i]);
@@ -159,19 +159,19 @@ function object(method, data) {
                                 let rows = scanRes.Items || [];
 
                                 // Handle in-memory sorting/limit offset fallbacks for unindexed scan sets
-                                if (data.$filter && data.$filter.sort) {
-                                    rows = sortData(rows, data.$filter.sort);
+                                if (data.filter && data.filter.sort) {
+                                    rows = sortData(rows, data.filter.sort);
                                 }
-                                if (data.$filter && typeof data.$filter.index === "number") {
-                                    rows = rows.slice(data.$filter.index);
+                                if (data.filter && typeof data.filter.index === "number") {
+                                    rows = rows.slice(data.filter.index);
                                 }
-                                if (data.$filter && typeof data.$filter.limit === "number") {
-                                    rows = rows.slice(0, data.$filter.limit);
+                                if (data.filter && typeof data.filter.limit === "number") {
+                                    rows = rows.slice(0, data.filter.limit);
                                 }
 
                                 for (let parsedRow of rows) {
-                                    if (data.$filter && data.$filter.search) {
-                                        let isMatch = searchData(parsedRow, data.$filter.search);
+                                    if (data.filter && data.filter.search) {
+                                        let isMatch = searchData(parsedRow, data.filter.search);
                                         if (!isMatch) continue;
                                     }
                                     documents.push({
@@ -184,7 +184,7 @@ function object(method, data) {
                         else if (method === "update") {
                             const updatePayload = { ...data[type][i] };
                             delete updatePayload._id;
-                            delete updatePayload.$filter;
+                            delete updatePayload.filter;
 
                             if (data[type][i]._id) {
                                 const updatedDoc = await executeUpdateTransaction(db, realTableName, data[type][i]._id, updatePayload, data);

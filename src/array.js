@@ -40,8 +40,8 @@ function array(method, data) {
                             const cleanName = tName.substring(prefix.length);
                             const tableObj = { name: cleanName };
 
-                            if (data.$filter && data.$filter.query) {
-                                let isFilter = queryData(tableObj, data.$filter.query);
+                            if (data.filter && data.filter.query) {
+                                let isFilter = queryData(tableObj, data.filter.query);
                                 if (isFilter) {
                                     arrayArray.push({ name: cleanName, database, storage: storageName });
                                 }
