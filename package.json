@@ -45,8 +45,8 @@
   "main": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./dist": "./dist/mongodb.js",
-    "./installer": "./installer/mongodb.installer.js"
+    "./dist": "./dist/dynamodb.js",
+    "./installer": "./installer/dynamodb.installer.js"
   },
   "devDependencies": {
     "@cocreate/webpack": "^1.9.0"
