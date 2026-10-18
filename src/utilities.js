@@ -27,17 +27,28 @@ const organizations = {};
 
 /**
  * Dynamically resolves or caches an AWS DynamoDB Document Client instance.
- * Normalizes AWS credentials out of your structured data.storageConfig.url object.
+ * Accepts storage API credentials or a structured bootstrap URL.
  */
 async function dbClient(data) {
-    const storageUrl = data.storageConfig?.url
+	const storage = data.storageConfig;
+	const storageUrl = storage?.region && storage?.accessKeyId && storage?.secretAccessKey
+		? {
+			region: storage.region,
+			accessKeyId: storage.accessKeyId,
+			secretAccessKey: storage.secretAccessKey,
+			endpoint: storage.endpoint
+		}
+		: storage?.url;
 
 	if (storageUrl) {
+		const connectionKey = typeof storageUrl === "object"
+			? JSON.stringify(storageUrl)
+			: storageUrl;
 		if (!organizations[data.organization_id]) {
 			organizations[data.organization_id] = {};
 		}
 		try {
-			if (!organizations[data.organization_id][storageUrl]) {
+			if (!organizations[data.organization_id][connectionKey]) {
 				const connectionPromise = (async () => {
 					let config = {};
 
@@ -81,10 +92,10 @@ async function dbClient(data) {
 					return docClient;
 				})();
 
-				organizations[data.organization_id][storageUrl] = connectionPromise;
+				organizations[data.organization_id][connectionKey] = connectionPromise;
 			}
 
-			return await organizations[data.organization_id][storageUrl];
+			return await organizations[data.organization_id][connectionKey];
 		} catch (error) {
 			console.error(`${data.organization_id}: DynamoDB failed to connect`);
 			errorHandler(data, error);
