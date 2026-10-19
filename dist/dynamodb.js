@@ -27586,8 +27586,8 @@ function array(method, data) {
             if (tName.startsWith(prefix)) {
               const cleanName = tName.substring(prefix.length);
               const tableObj = { name: cleanName };
-              if (data.$filter && data.$filter.query) {
-                let isFilter = queryData(tableObj, data.$filter.query);
+              if (data.filter && data.filter.query) {
+                let isFilter = queryData(tableObj, data.filter.query);
                 if (isFilter) {
                   arrayArray.push({ name: cleanName, database, storage: storageName });
                 }
@@ -27687,7 +27687,7 @@ function array(method, data) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (array);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -27714,8 +27714,8 @@ function database(method, data) {
           data: { api: "listDatabases", context: dbName },
           organization_id: data.organization_id
         });
-        if (data.$filter && data.$filter.query) {
-          let isFilter = queryData(dbObj, data.$filter.query);
+        if (data.filter && data.filter.query) {
+          let isFilter = queryData(dbObj, data.filter.query);
           if (isFilter) {
             databaseArray.push({ database: dbObj, storage: storageName });
           }
@@ -27749,7 +27749,7 @@ function database(method, data) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (database);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -27795,7 +27795,7 @@ function object(method, data) {
             data[type] = [{ _id: data[type] }];
           else if (!Array.isArray(data[type]))
             data[type] = [data[type]];
-          let isFilter = !!data.$filter;
+          let isFilter = !!data.filter;
           if (isFilter && !data[type].length || data.isFilter) {
             data[type].splice(0, 0, { isFilter: "isEmptyObjectFilter" });
           }
@@ -27812,7 +27812,7 @@ function object(method, data) {
             delete data[type][i].$storage;
             delete data[type][i].$database;
             delete data[type][i].$array;
-            let queryFilter = isFilter ? data.$filter : data[type][i].$filter || null;
+            let queryFilter = isFilter ? data.filter : data[type][i].filter || null;
             if (method === "create") {
               data[type][i] = replaceArray(data[type][i]);
               data[type][i] = dotNotationToObject(data[type][i]);
@@ -27881,18 +27881,18 @@ function object(method, data) {
                 let scanParams = compileFilterToDynamo(realTableName, queryFilter, data.organization_id);
                 const scanRes = await db.send(new ScanCommand(scanParams));
                 let rows = scanRes.Items || [];
-                if (data.$filter && data.$filter.sort) {
-                  rows = sortData(rows, data.$filter.sort);
+                if (data.filter && data.filter.sort) {
+                  rows = sortData(rows, data.filter.sort);
                 }
-                if (data.$filter && typeof data.$filter.index === "number") {
-                  rows = rows.slice(data.$filter.index);
+                if (data.filter && typeof data.filter.index === "number") {
+                  rows = rows.slice(data.filter.index);
                 }
-                if (data.$filter && typeof data.$filter.limit === "number") {
-                  rows = rows.slice(0, data.$filter.limit);
+                if (data.filter && typeof data.filter.limit === "number") {
+                  rows = rows.slice(0, data.filter.limit);
                 }
                 for (let parsedRow of rows) {
-                  if (data.$filter && data.$filter.search) {
-                    let isMatch = searchData(parsedRow, data.$filter.search);
+                  if (data.filter && data.filter.search) {
+                    let isMatch = searchData(parsedRow, data.filter.search);
                     if (!isMatch) continue;
                   }
                   documents.push({
@@ -27904,7 +27904,7 @@ function object(method, data) {
             } else if (method === "update") {
               const updatePayload = { ...data[type][i] };
               delete updatePayload._id;
-              delete updatePayload.$filter;
+              delete updatePayload.filter;
               if (data[type][i]._id) {
                 const updatedDoc = await executeUpdateTransaction(db, realTableName, data[type][i]._id, updatePayload, data);
                 if (updatedDoc) {
@@ -27990,13 +27990,20 @@ function object(method, data) {
 
 const organizations = {};
 async function dbClient(data) {
-  const storageUrl = data.storageConfig?.url;
+  const storage = data.storageConfig;
+  const storageUrl = storage?.region && storage?.accessKeyId && storage?.secretAccessKey ? {
+    region: storage.region,
+    accessKeyId: storage.accessKeyId,
+    secretAccessKey: storage.secretAccessKey,
+    endpoint: storage.endpoint
+  } : storage?.url;
   if (storageUrl) {
+    const connectionKey = typeof storageUrl === "object" ? JSON.stringify(storageUrl) : storageUrl;
     if (!organizations[data.organization_id]) {
       organizations[data.organization_id] = {};
     }
     try {
-      if (!organizations[data.organization_id][storageUrl]) {
+      if (!organizations[data.organization_id][connectionKey]) {
         const connectionPromise = (async () => {
           let config = {};
           if (typeof storageUrl === "object" && storageUrl !== null) {
@@ -28030,9 +28037,9 @@ async function dbClient(data) {
           await docClient.send(new _aws_sdk_client_dynamodb__WEBPACK_IMPORTED_MODULE_1__/* .ListTablesCommand */ .H({ Limit: 1 }));
           return docClient;
         })();
-        organizations[data.organization_id][storageUrl] = connectionPromise;
+        organizations[data.organization_id][connectionKey] = connectionPromise;
       }
-      return await organizations[data.organization_id][storageUrl];
+      return await organizations[data.organization_id][connectionKey];
     } catch (error) {
       console.error(`${data.organization_id}: DynamoDB failed to connect`);
       errorHandler(data, error);
@@ -29566,7 +29573,7 @@ async function send(data) {
 /* harmony default export */ const src = ({ send });
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ src
+/* harmony export */   "A", 0, src
 /* harmony export */ ]);
 
 const __webpack_exports__default = __webpack_exports__.A;
