@@ -93,7 +93,7 @@ function object(method, data) {
                                 _id: id,
                                 organization_id: orgId,
                                 created,
-                                modified: null,
+                                updated: null,
                                 ...recordPayload
                             };
 
@@ -127,9 +127,9 @@ function object(method, data) {
                                     let dbRecord = getRes.Item;
 
                                     // Dynamic offline timings sync
-                                    if ($storage.length && data[type][i].modified && data[type][i].modified.on) {
-                                        let clientTime = new Date(data[type][i].modified.on);
-                                        let dbTime = new Date(dbRecord.modified ? dbRecord.modified.on : 0);
+                                    if ($storage.length && data[type][i].updated && data[type][i].updated.on) {
+                                        let clientTime = new Date(data[type][i].updated.on);
+                                        let dbTime = new Date(dbRecord.updated ? dbRecord.updated.on : 0);
 
                                         if (clientTime > dbTime) {
                                             const updatedRecord = { ...dbRecord, ...data[type][i] };

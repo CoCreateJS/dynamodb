@@ -27829,7 +27829,7 @@ function object(method, data) {
                 _id: id,
                 organization_id: orgId,
                 created,
-                modified: null,
+                updated: null,
                 ...recordPayload
               };
               process.emit("usage", {
@@ -27855,9 +27855,9 @@ function object(method, data) {
                 }));
                 if (getRes.Item) {
                   let dbRecord = getRes.Item;
-                  if ($storage.length && data[type][i].modified && data[type][i].modified.on) {
-                    let clientTime = new Date(data[type][i].modified.on);
-                    let dbTime = new Date(dbRecord.modified ? dbRecord.modified.on : 0);
+                  if ($storage.length && data[type][i].updated && data[type][i].updated.on) {
+                    let clientTime = new Date(data[type][i].updated.on);
+                    let dbTime = new Date(dbRecord.updated ? dbRecord.updated.on : 0);
                     if (clientTime > dbTime) {
                       const updatedRecord = { ...dbRecord, ...data[type][i] };
                       const savedRecord = await executeUpdateTransaction(db, realTableName, data[type][i]._id, updatedRecord, data);
@@ -28087,7 +28087,7 @@ async function executeUpdateTransaction(db, realTableName, itemId, rawUpdateInpu
         return null;
       }
     }
-    const modified = {
+    const updated = {
       on: new Date(requestData.timeStamp).toISOString(),
       by: requestData.user_id || requestData.clientId
     };
@@ -28096,12 +28096,12 @@ async function executeUpdateTransaction(db, realTableName, itemId, rawUpdateInpu
     delete savePayload._id;
     delete savePayload.organization_id;
     delete savePayload.created;
-    delete savePayload.modified;
+    delete savePayload.updated;
     const recordToWrite = {
       _id: itemId,
       organization_id: requestData.organization_id,
-      created: currentRecord.created || modified,
-      modified,
+      created: currentRecord.created || updated,
+      updated,
       ...savePayload
     };
     process.emit("usage", {
