@@ -7,7 +7,6 @@ import {
 
 import { 
     dbClient, 
-    createFilter, 
     createData,
     errorHandler 
 } from "./utilities.js";
@@ -252,4 +251,4 @@ function object(method, data) {
     });
 }
 
-export {object}
+export default object
