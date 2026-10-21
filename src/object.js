@@ -76,6 +76,7 @@ function object(method, data) {
                         if (method === "create") {
                             data[type][i] = replaceArray(data[type][i]);
                             data[type][i] = dotNotationToObject(data[type][i]);
+                            delete data[type][i].modified;
 
                             const id = data[type][i]._id || `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
                             const orgId = data.organization_id;
@@ -87,12 +88,14 @@ function object(method, data) {
                             const recordPayload = { ...data[type][i] };
                             delete recordPayload._id;
                             delete recordPayload.organization_id;
+                            delete recordPayload.created;
+                            delete recordPayload.updated;
 
                             const finalItem = {
                                 _id: id,
                                 organization_id: orgId,
                                 created,
-                                updated: null,
+                                updated: created,
                                 ...recordPayload
                             };
 

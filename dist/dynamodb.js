@@ -28253,6 +28253,7 @@ function object(method, data) {
             if (method === "create") {
               data[type][i] = replaceArray(data[type][i]);
               data[type][i] = (0,_cocreate_utils__WEBPACK_IMPORTED_MODULE_0__/* .dotNotationToObject */ .O)(data[type][i]);
+              delete data[type][i].modified;
               const id = data[type][i]._id || `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
               const orgId = data.organization_id;
               const created = {
@@ -28262,11 +28263,13 @@ function object(method, data) {
               const recordPayload = { ...data[type][i] };
               delete recordPayload._id;
               delete recordPayload.organization_id;
+              delete recordPayload.created;
+              delete recordPayload.updated;
               const finalItem = {
                 _id: id,
                 organization_id: orgId,
                 created,
-                updated: null,
+                updated: created,
                 ...recordPayload
               };
               process.emit("usage", {
@@ -28538,6 +28541,7 @@ async function executeUpdateTransaction(db, realTableName, itemId, rawUpdateInpu
     delete savePayload.organization_id;
     delete savePayload.created;
     delete savePayload.updated;
+    delete savePayload.modified;
     const recordToWrite = {
       _id: itemId,
       organization_id: requestData.organization_id,

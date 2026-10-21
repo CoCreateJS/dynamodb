@@ -174,6 +174,7 @@ async function executeUpdateTransaction(db, realTableName, itemId, rawUpdateInpu
 		delete savePayload.organization_id;
 		delete savePayload.created;
 		delete savePayload.updated;
+		delete savePayload.modified;
 
 		const recordToWrite = {
 			_id: itemId,
