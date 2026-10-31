@@ -34,9 +34,9 @@
   "author": "CoCreate LLC",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/CoCreate-app/CoCreate-dynamodb/issues"
+    "url": "https://github.com/CoCreateJS/CoCreate-dynamodb/issues"
   },
-  "homepage": "https://cocreate.app/docs/dynamodb",
+  "homepage": "https://CoCreateJS.com/docs/dynamodb",
   "funding": {
     "type": "GitHub Sponsors ❤",
     "url": "https://github.com/sponsors/CoCreate-app"
