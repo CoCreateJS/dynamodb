@@ -7,6 +7,8 @@ import {
 /**
  * "array" operations mapped to AWS DynamoDB Tables.
  * To achieve strict isolation, we prefix table names: "orgId_arrayName"
+ * @private
+ * @environment server
  */
 function array(method, data) {
     const storageName = data.storageConfig?.name;

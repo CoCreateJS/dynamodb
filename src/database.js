@@ -7,6 +7,8 @@ import {
 /**
  * "database" operations mapped to DynamoDB logical grouping names.
  * DynamoDB is serverless and works globally on an AWS Region basis, so we emulate schemas.
+ * @private
+ * @environment server
  */
 function database(method, data) {
     const storageName = data.storageConfig?.name;

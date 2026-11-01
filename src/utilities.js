@@ -28,6 +28,8 @@ const organizations = {};
 /**
  * Dynamically resolves or caches an AWS DynamoDB Document Client instance.
  * Accepts storage API credentials or a structured bootstrap URL.
+ * @private
+ * @environment server
  */
 async function dbClient(data) {
 	const storage = data.storageConfig;
@@ -142,6 +144,8 @@ process.on("orgDeleted", (organization_id) => {
 
 /**
  * Executes a transactional item write lock pipeline simulating isolation behaviors inside DynamoDB.
+ * @private
+ * @environment server
  */
 async function executeUpdateTransaction(db, realTableName, itemId, rawUpdateInput, requestData) {
 	try {
@@ -211,6 +215,8 @@ async function executeUpdateTransaction(db, realTableName, itemId, rawUpdateInpu
 /**
  * Applies deep MongoDB modification operators ($set, $unset, $push, $pull, $addToSet, $inc)
  * recursively on a target record.
+ * @private
+ * @environment server
  */
 function applyMongoUpdate(record, updatePayload) {
 	let target = { ...record };
@@ -301,6 +307,8 @@ function applyMongoUpdate(record, updatePayload) {
 
 /**
  * Translates CoCreate Mongo-style filters dynamically into AWS DynamoDB query schemas.
+ * @private
+ * @environment server
  */
 function compileFilterToDynamo(tableName, filter, organizationId) {
 	let params = {

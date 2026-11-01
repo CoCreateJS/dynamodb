@@ -23,6 +23,8 @@ import object from "./object.js";
  * Routes CRUD requests to appropriate database, array, or object modules.
  * @param {Object} data - CRUD request payload containing method, database, array, organization_id, etc.
  * @returns {Promise<Object>} Execution result from database layer
+ * @public
+ * @environment server
  */
 async function send(data) {
     if (!data || !data.method) {
@@ -38,3 +40,10 @@ async function send(data) {
 }
 
 export default { send };
+
+/**
+ * Lightweight, real-time Amazon DynamoDB CRUD wrapper and multi-tenant state routing client for the collaborative CoCreate ecosystem.
+ *
+ * @module dynamodb
+ * @environment server
+ */
