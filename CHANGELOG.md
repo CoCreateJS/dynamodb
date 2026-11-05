@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/CoCreateJS/dynamodb/compare/v2.0.0...v2.0.1) (2026-11-05)
+
+
+### Bug Fixes
+
+* upgrade CoCreate dependencies to v2 ([8e49719](https://github.com/CoCreateJS/dynamodb/commit/8e49719bc095d0deb563619d351ad47c987e84cb))
+
 # [2.0.0](https://github.com/CoCreateJS/dynamodb/compare/v1.1.1...v2.0.0) (2026-11-02)
 
 
